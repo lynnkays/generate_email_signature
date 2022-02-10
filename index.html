@@ -1,0 +1,79 @@
+<!--
+    index.html
+    Handles the main interface for the form and HTML code
+    Created by: Kaylynn Diaz-Schott
+    Last Modified: 09/23/2020
+<!DOCTYPE html>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+
+<!--Header-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Generate Email Signatures</title>
+
+    <!--Javascript and Style files-->
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js" integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<!--Body-->
+<body>
+    <div>
+        <h3>Email Signature Generator</h3>
+        <form id="frm1">
+            <!--Form for Employee Info-->
+            Full Name (with Designations): <input type="text" id="fullname" placeholder="John Smith, SIOR®, CRE®, CCIM®, ALC, RLI"><br>
+            <!--Adds or Removes Titles for Employees-->
+            Title: <input type="text" id="ftitle" placeholder="Commercial Associate">
+            <table id="multipleTitles" style="width:100%"></table>
+            <!--Button to add another title-->
+            <p><input type="button" value="&#43 Add Another Title"></p>Cell Phone Number: <input type="tel" id="cell" onkeypress="return numberPressed(event);" placeholder="123-456-7890"><br> Direct Line: <input type="tel" id="direct" onkeypress="return numberPressed(event);"
+                placeholder="123-456-7890"><br>
+        </form>
+        <button onclick=handleData();>Submit</button>
+        <!--Submit Button which triggers the handleData() function in script.js-->
+        <button onclick=document.location.reload(true)>New Form</button><br/><br/>
+        <!--Reloads webpage for a new form-->
+        <textarea id="html-code" rows="20" cols="100"></textarea><br/><br/>
+        <button onclick=startDownload();>Start Download</button>
+        <button onclick=copyCode();>Copy to Clipboard</button><br/><br/>
+
+        <script>
+            //JQuery code to add/remove multiple titles
+            $('#multipleTitles').on('click', 'input[type="button"]', function() {
+                $(this).closest('tr').remove();
+            })
+            $('p input[type="button"]').click(function() {
+                $('#multipleTitles').append('<tr><td><input type="text" id="title1" class="fname" /></td><td><input type="button" value="Remove Title" style="background-color: #007481;border: none;color: white;padding: 8px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 12px;" /></td></tr>')
+
+            });
+        </script>
+    </div>
+</body>
+
+<!--Handles event listeners for the phone numbers format-->
+<script>
+    // Format the phone number as the user types it
+    document.getElementById('cell').addEventListener('keyup', function(evt) {
+        var phoneNumber = document.getElementById('cell');
+        phoneNumber.value = phoneFormat(phoneNumber.value);
+    });
+
+    // We need to manually format the phone number on page load
+    document.getElementById('cell').value = phoneFormat(document.getElementById('cell').value);
+
+    // Format the phone number as the user types it
+    document.getElementById('direct').addEventListener('keyup', function(evt) {
+        var phoneNumber = document.getElementById('direct');
+        phoneNumber.value = phoneFormat(phoneNumber.value);
+    });
+
+    // We need to manually format the phone number on page load
+    document.getElementById('direct').value = phoneFormat(document.getElementById('direct').value);
+</script>
+
+</html>
